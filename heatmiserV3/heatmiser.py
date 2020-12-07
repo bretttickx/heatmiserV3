@@ -364,7 +364,17 @@ class HeatmiserThermostat(object):
         pass
 
     def get_floor_temp(self):
-        return self.dcb[31]['value'] / 10
+        """
+        Returns the temperature based on sensor selection
+        """
+        sensor = self.dcb[13]['value']
+        if sensor in [0,3]:
+            index = 32
+        elif sensor in [1,4]: 
+            index = 28
+        else:   
+            index = 30   
+        return (self.dcb[index]["value"] * 256 + self.dcb[index +1]["value"])/10
 
     def get_sensor_error(self):
         return self.dcb[34]['value']
